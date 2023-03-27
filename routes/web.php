@@ -5,8 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserControler;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\User\DashboardController as UserDashbord;
-use App\Http\Controllers\Admin\DashboardController as AdminDashbord;
+use App\Http\Controllers\User\DashboardController as UserDashboard;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,21 +35,21 @@ Route::get('auth/google/callback', [UserControler::class, 'handleProviderCallbac
     
     Route::middleware('auth')->group(function () {
         // checkout routes
-        Route::get('checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
-        Route::get('checkout/{camp:slug}', [CheckoutController::class, 'create'])->name('checkout.create');
-        Route::post('checkout/{camp}', [CheckoutController::class, 'store'])->name('checkout.store');
+        Route::get('checkout/success', [CheckoutController::class, 'success'])->name('checkout.success')->middleware('ensureUserRole:user');
+        Route::get('checkout/{camp:slug}', [CheckoutController::class, 'create'])->name('checkout.create')->middleware('ensureUserRole:user');
+        Route::post('checkout/{camp}', [CheckoutController::class, 'store'])->name('checkout.store')->middleware('ensureUserRole:user');
         
         // user dashboard
         Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
         // Route::get('dashboard/checkout/invoice/{checkout}', [CheckoutController::class, 'invoice'])->name('user.checkout.invoice');
 
         // user Dashboard
-        Route::prefix('user/dashboard')->namespace('user')->name('user.')->group(function(){
-            Route::get('/', [UserDashbord::class, 'index'])->name('dashboard');
+        Route::prefix('user/dashboard')->namespace('User')->name('user.')->middleware('ensureUserRole:user')->group(function(){
+            Route::get('/', [UserDashboard::class, 'index'])->name('dashboard');
         });
         // Admin Dashboard
-        Route::prefix('admin/dashboard')->namespace('admin')->name('admin.')->group(function(){
-            Route::get('/', [AdminDashbord::class, 'index'])->name('dashboard');
+        Route::prefix('admin/dashboard')->namespace('Admin')->name('admin.')->middleware('ensureUserRole:admin')->group(function(){
+            Route::get('/', [AdminDashboard::class, 'index'])->name('dashboard');
         });
 
 });
