@@ -7,8 +7,8 @@ use App\Models\Checkout;
 use Illuminate\Http\Request;
 use App\Http\Requests\User\Checkout\Store;
 use App\Models\Camp;
-use Auth;
-use Mail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Mail\Checkout\AfterCheckout;
 
 class CheckoutController extends Controller
@@ -28,7 +28,7 @@ class CheckoutController extends Controller
     {
         if ($camp->isRegistered) {
             $request->session()->flash('error', "You already registered on {$camp->title} camp.");
-            return redirect(route('dashboard'));
+            return redirect(route('user.dashboard'));
         }
         return view('checkout.create', 
         [
@@ -99,8 +99,5 @@ class CheckoutController extends Controller
         return view('checkout.success');
     }
 
-    public function invoice(Checkout $checkout)
-    {
-        return $checkout;
-    }
+    
 }

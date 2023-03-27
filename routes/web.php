@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserControler;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\User\DashboardController as UserDashbord;
+use App\Http\Controllers\Admin\DashboardController as AdminDashbord;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +41,16 @@ Route::get('auth/google/callback', [UserControler::class, 'handleProviderCallbac
         
         // user dashboard
         Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
-        Route::get('dashboard/checkout/invoice/{checkout}', [CheckoutController::class, 'invoice'])->name('user.checkout.invoice');
+        // Route::get('dashboard/checkout/invoice/{checkout}', [CheckoutController::class, 'invoice'])->name('user.checkout.invoice');
+
+        // user Dashboard
+        Route::prefix('user/dashboard')->namespace('user')->name('user.')->group(function(){
+            Route::get('/', [UserDashbord::class, 'index'])->name('dashboard');
+        });
+        // Admin Dashboard
+        Route::prefix('admin/dashboard')->namespace('admin')->name('admin.')->group(function(){
+            Route::get('/', [AdminDashbord::class, 'index'])->name('dashboard');
+        });
 
 });
 
