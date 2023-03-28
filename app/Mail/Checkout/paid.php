@@ -8,9 +8,8 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Checkout;
 
-class AfterCheckout extends Mailable
+class paid extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -30,7 +29,7 @@ class AfterCheckout extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Register Camp{{ $this->checkout->Camp->id }}' ,
+            subject: 'Your Transaction Has Been Confirmed',
         );
     }
 
@@ -40,8 +39,8 @@ class AfterCheckout extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.checkout.afterCheckout',
-            with:
+            markdown: 'emails.checkout.paid',
+            with: 
             [
                 'checkout' => $this->checkout
             ]
