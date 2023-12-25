@@ -12,7 +12,7 @@ class HomeController extends Controller
     public function dashboard()
     {
         switch (FacadesAuth::user()->is_admin) {
-            case 'true':
+            case true:
                 return \redirect(\route('admin.dashboard'));
                 break;
             
