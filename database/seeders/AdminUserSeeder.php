@@ -18,7 +18,7 @@ class AdminUserSeeder extends Seeder
                 'name' => 'Admin',
                 'email' => 'admin@laracamp.com',
                 'email_verified_at' => date('Y-m-d H:i:s', time()),
-                'password' => \bcrypt('password'),
+                'password' => \bcrypt('p4ssw0rd'),
                 'is_admin' => true
             ]
         );
