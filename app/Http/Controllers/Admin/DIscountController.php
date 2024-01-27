@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Discount;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Admin\Discount\Store;
 
 class DIscountController extends Controller
 {
@@ -13,7 +14,10 @@ class DIscountController extends Controller
      */
     public function index()
     {
-        return view('admin.discount.index');
+        $discounts = Discount::all();
+        return view('admin.discount.index', [
+            'discounts' => $discounts
+        ]);
     }
 
     /**
@@ -27,9 +31,11 @@ class DIscountController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Store $request)
     {
-        //
+        $discount = Discount::create($request->all());
+        $request->session()->flash('success', 'A new discount has been created');
+        return \redirect(\route('admin.discount.index'));
     }
 
     /**
