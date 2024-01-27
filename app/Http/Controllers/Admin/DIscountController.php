@@ -6,6 +6,7 @@ use App\Models\Discount;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\Discount\Store;
+use App\Http\Requests\Admin\Discount\Update;
 
 class DIscountController extends Controller
 {
@@ -34,8 +35,8 @@ class DIscountController extends Controller
     public function store(Store $request)
     {
         $discount = Discount::create($request->all());
-        $request->session()->flash('success', 'A new discount has been created');
-        return \redirect(\route('admin.discount.index'));
+        $request->session()->flash('success', "A new discount has been created");
+        return redirect(route('admin.discount.index'));
     }
 
     /**
@@ -51,15 +52,20 @@ class DIscountController extends Controller
      */
     public function edit(Discount $discount)
     {
-        //
+        return view('admin.discount.edit', [
+
+            'discount' => $discount
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Discount $discount)
+    public function update(Update $request, Discount $discount)
     {
-        //
+        $discount->update($request->all());
+        $request->session()->flash('success', "Discount {$discount->name} has been updated");
+        return redirect(route('admin.discount.index'));
     }
 
     /**
