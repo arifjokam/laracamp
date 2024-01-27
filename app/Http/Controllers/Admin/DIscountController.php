@@ -71,8 +71,10 @@ class DIscountController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Discount $discount)
+    public function destroy(Request $request, Discount $discount)
     {
-        //
+        $discount->delete();
+        $request->session()->flash('error', "Discount {$discount->name} has been Delete");
+        return redirect(route('admin.discount.index'));
     }
 }
