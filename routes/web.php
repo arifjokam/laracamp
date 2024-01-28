@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\User\DashboardController as UserDashboard;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\CheckoutController as AdminCheckout;
+use App\Http\Controllers\Admin\DIscountController as AdminDiscount;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,11 +53,14 @@ Route::post('payment/success', [CheckoutController::class, 'midtransCallback']);
             Route::get('/', [UserDashboard::class, 'index'])->name('dashboard');
         });
         // Admin Dashboard
-        Route::prefix('admin/dashboard')->namespace('Admin')->name('admin.')->middleware('ensureUserRole:admin')->group(function(){
+        Route::prefix('admin/dashboard')->name('admin.')->middleware('ensureUserRole:admin')->group(function(){
             Route::get('/', [AdminDashboard::class, 'index'])->name('dashboard');
 
             // Admin Checkout
             Route::post('checkout/{checkout}', [AdminCheckout::class, 'update'])->name('checkout.update');
+
+            // Admin Discount
+            Route::resource('discount', AdminDiscount::class);
         });
 
 });
